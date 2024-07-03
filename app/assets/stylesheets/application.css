@@ -1,0 +1,54 @@
+/* app/assets/stylesheets/application.css */
+.design-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbox {
+  width: 200px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.toolbox h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.draggable-item {
+  background-color: #e0e0e0;
+  padding: 5px;
+  margin-bottom: 5px;
+  cursor: move;
+}
+
+.survey-page {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.survey-page h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.droppable-area {
+  min-height: 500px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  overflow: auto;
+}
+
+.survey-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: move;
+}
+
+.survey-item[draggable="false"] {
+  cursor: text;
+}

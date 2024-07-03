@@ -1,0 +1,94 @@
+<!-- app/views/surveys/edit_design.html.erb -->
+<h1>Design Survey: <%= @survey.name %></h1>
+
+<div class="design-container">
+  <div class="toolbox">
+    <h2>Toolbox</h2>
+    <div id="label-tool" class="draggable-item" data-item="label">Label</div>
+    <div id="input-tool" class="draggable-item" data-item="input">Input Text</div>
+  </div>
+
+  <div class="survey-page">
+    <h2>Survey Page</h2>
+    <div id="survey-container" class="droppable-area">
+      <!-- Survey components will be dynamically added here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let surveyContainer = document.getElementById('survey-container');
+
+    // Function to handle dragging of toolbox items
+    function dragStart(event) {
+      event.dataTransfer.setData('text', event.target.dataset.item);
+    }
+
+    // Function to handle dropping items into the survey container
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    // Function to handle dropping items into the survey container
+    function drop(event) {
+      event.preventDefault();
+      let itemType = event.dataTransfer.getData('text');
+      let element = document.createElement('div');
+      element.classList.add('survey-item');
+      element.setAttribute('draggable', 'true');
+
+      if (itemType === 'label') {
+        element.innerHTML = '<div class="label-text" contenteditable="true">Label</div>';
+      } else if (itemType === 'input') {
+        element.innerHTML = '<input type="text" class="input-text">';
+      }
+
+      // Double-click to disable draggability while editing
+      element.addEventListener('dblclick', function() {
+        this.setAttribute('draggable', 'false');
+      });
+
+      surveyContainer.appendChild(element);
+    }
+
+    // Attach event listeners to toolbox items
+    let draggableItems = document.querySelectorAll('.draggable-item');
+    draggableItems.forEach(function(item) {
+      item.addEventListener('dragstart', dragStart);
+    });
+
+    // Attach event listeners to survey container for drop functionality
+    surveyContainer.addEventListener('dragover', allowDrop);
+    surveyContainer.addEventListener('drop', drop);
+
+    // Enable editing for labels and input text
+    surveyContainer.addEventListener('dblclick', function(event) {
+      let target = event.target;
+      if (target.classList.contains('label-text')) {
+        target.setAttribute('contenteditable', 'true');
+        target.focus();
+      } else if (target.classList.contains('input-text')) {
+        target.focus();
+      }
+    });
+
+    // Disable editing and save changes on blur
+    surveyContainer.addEventListener('blur', function(event) {
+      let target = event.target;
+      if (target.classList.contains('label-text') || target.classList.contains('input-text')) {
+        target.removeAttribute('contenteditable');
+      }
+    });
+
+    // Prevent drag action while editing label text
+    surveyContainer.addEventListener('dragstart', function(event) {
+      let target = event.target;
+      if (target.classList.contains('label-text') || target.classList.contains('input-text')) {
+        event.preventDefault();
+      }
+    });
+  });
+</script>
+
+<%= link_to 'Back', surveys_path %>
